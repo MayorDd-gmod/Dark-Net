@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DarkNet Market | DARKVIP & Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0f1e;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            color: #eef2ff;
+        }
+        .bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0f1e;
+            z-index: -2;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 24px 0 16px;
+            border-bottom: 1px solid #1e2a45;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .logo-img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: #0a0f1e;
+            padding: 4px;
+            border: 1px solid #7c8ee6;
+        }
+        .logo h1 {
+            font-size: 34px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #7c8ee6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo p { font-size: 13px; color: #7e8bb8; }
+        .nav-links { display: flex; gap: 28px; flex-wrap: wrap; align-items: center; }
+        .nav-links a { color: #cbd5ff; text-decoration: none; font-weight: 500; transition: 0.2s; cursor: pointer; }
+        .nav-links a:hover { color: white; }
+        .profile-link {
+            background: linear-gradient(95deg, #2c3e8f, #1e2a45);
+            padding: 6px 16px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .profile-link:hover {
+            background: #1e2a45;
+        }
+
+        .login-container {
+            max-width: 480px;
+            margin: 60px auto;
+            background: #0f1629;
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 40px 32px;
+            border: 1px solid #1e2a45;
+            text-align: center;
+        }
+        .login-container h2 { font-size: 28px; margin-bottom: 8px; color: #fff; }
+        .login-container p { color: #8f9ed4; margin-bottom: 28px; }
+        .login-input { width: 100%; background: #0c1126; border: 1px solid #2a3460; padding: 14px 18px; border-radius: 60px; color: white; font-size: 16px; margin-bottom: 16px; }
+        .login-btn { width: 100%; background: linear-gradient(95deg, #2c3e8f, #1e2a45); border: none; padding: 14px; border-radius: 60px; color: white; font-weight: 700; font-size: 16px; cursor: pointer; }
+        .login-btn:hover { transform: scale(0.98); background: #1e2a45; }
+        .error-msg { color: #ff7b72; font-size: 14px; margin-top: 12px; }
+        .reset-btn { background: #4a2e2e; margin-top: 10px; width: 100%; display: none; }
+        .reset-btn:hover { background: #5e2020; }
+
+        .tabs {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 32px 0 20px;
+            border-bottom: 1px solid #1e2a45;
+            padding-bottom: 12px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #a5b2e8;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 8px 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+        .tab-btn.active { color: white; }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -14px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #2c3e8f, #7c8ee6);
+            border-radius: 3px;
+        }
+        .tab-pane { display: none; animation: fade 0.3s ease; }
+        .tab-pane.active-pane { display: block; }
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+        .card {
+            background: #0f1629;
+            backdrop-filter: blur(2px);
+            border-radius: 28px;
+            border: 1px solid #1e2a45;
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .stat-card {
+            background: #0f1629;
+            border-radius: 20px;
+            padding: 20px;
+            border-left: 4px solid #2c3e8f;
+        }
+        .btn {
+            background: #1e2a45;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+        .btn-primary { background: linear-gradient(95deg, #2c3e8f, #1e2a45); }
+        .btn-primary:hover { transform: scale(0.97); background: #1e2a45; }
+        .btn-outline { background: transparent; border: 1px solid #3f4a7c; }
+        .btn-admin { background: #2c6e3c; border: 1px solid #5eff8e; }
+        .btn-admin:hover { background: #1e4a2a; }
+        input, textarea {
+            background: #0c1126;
+            border: 1px solid #2a3460;
+            padding: 10px 16px;
+            border-radius: 40px;
+            color: white;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+        .tag {
+            background: #1e2a45;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+        }
+        .goods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .good-card {
+            background: #0f1629;
+            border-radius: 20px;
+            padding: 18px;
+            text-align: left;
+            border-left: 3px solid #2c3e8f;
+        }
+        .good-card h4 { font-size: 18px; margin-bottom: 8px; }
+        .good-price { font-size: 22px; font-weight: bold; color: #7c8ee6; margin: 10px 0; }
+        .good-desc { font-size: 13px; color: #9aa9d1; margin: 8px 0; line-height: 1.4; }
+        .footer {
+            text-align: center;
+            padding: 32px 0 24px;
+            color: #5d6b9e;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            position: fixed; bottom: 30px; right: 20px; background: #1e2a45; padding: 12px 20px; border-radius: 40px;
+            border-left: 4px solid #5eff8e; z-index: 1200; animation: fadeOut 2.5s forwards;
+        }
+        @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+        .role-badge { background: #1e2a45; padding: 4px 12px; border-radius: 40px; font-size: 12px; }
+        .fake-vpn {
+            background: linear-gradient(145deg, #0f1629, #0a0f1e);
+            border-radius: 28px;
+            padding: 24px;
+            text-align: center;
+        }
+        .vpn-status {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        .vpn-status.active { color: #5eff8e; text-shadow: 0 0 4px #2c6e3c; }
+        .vpn-status.inactive { color: #ff7b72; }
+        .country-select {
+            background: #0c1126;
+            border: 1px solid #2a3460;
+            padding: 12px 18px;
+            border-radius: 60px;
+            color: white;
+            width: 200px;
+            margin: 10px auto;
+        }
+        .section-icon {
+            font-size: 64px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .register-link {
+            margin-top: 20px;
+            color: #8f9ed4;
+        }
+        .register-link span {
+            color: #7c8ee6;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .footer-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-size: 12px;
+            color: #5d6b9e;
+            margin-top: 20px;
+        }
+        .profile-card {
+            background: #0f1629;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #7c8ee6;
+            background: #0a0f1e;
+            cursor: pointer;
+        }
+        .vpn-link {
+            color: #7c8ee6;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .user-card {
+            background: #0f1629;
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            border: 1px solid #1e2a45;
+            transition: 0.2s;
+        }
+        .user-card:hover {
+            border-color: #7c8ee6;
+            background: #0c1126;
+        }
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .user-balance {
+            font-size: 16px;
+            color: #7c8ee6;
+        }
+        .user-role {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 12px;
+        }
+        .role-admin {
+            background: #2c6e3c;
+            color: #fff;
+        }
+        .role-user {
+            background: #1e2a45;
+            color: #cbd5ff;
+        }
+        .user-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .request-item {
+            background: #0c1126;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .profile-field {
+            margin: 12px 0;
+        }
+        .profile-field label {
+            font-weight: bold;
+            color: #7c8ee6;
+            margin-right: 8px;
+        }
+        .profile-field input, .profile-field textarea {
+            width: 100%;
+            margin-top: 4px;
+        }
+        .cart-icon {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: linear-gradient(95deg, #2c3e8f, #1e2a45);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 28px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.2s;
+            display: none;
+        }
+        .cart-icon.visible {
+            display: flex;
+        }
+        .cart-icon:hover {
+            transform: scale(1.05);
+        }
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        .cart-sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 420px;
+            height: 100%;
+            background: #0d1425;
+            padding: 25px;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            z-index: 1100;
+            overflow-y: auto;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        }
+        .cart-sidebar.open {
+            transform: translateX(0);
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2c3e8f;
+        }
+        .cart-header h3 {
+            color: #7c8ee6;
+        }
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #ccc;
+        }
+        .cart-items {
+            margin-bottom: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #1a2340;
+        }
+        .cart-item-info {
+            flex: 1;
+        }
+        .cart-item-title {
+            font-weight: bold;
+        }
+        .cart-item-price {
+            font-size: 13px;
+            color: #7c8ee6;
+        }
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cart-item-controls button {
+            background: #1a2340;
+            color: #fff;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .cart-item-controls button:hover {
+            background: #2c3e8f;
+        }
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #2c3e8f;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: right;
+            color: #7c8ee6;
+        }
+        .checkout-btn {
+            background: linear-gradient(95deg, #2c3e8f, #1e2a45);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+        .checkout-btn:hover {
+            background: #1e2a45;
+        }
+        .order-summary {
+            background: #0c1126;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .order-summary h4 {
+            color: #7c8ee6;
+            margin-bottom: 12px;
+        }
+        .order-summary p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="container">
+    <div class="header">
+        <div class="logo-area">
+            <img class="logo-img" src="https://raw.githubusercontent.com/MayorDd-gmod/Dark-Net/main/DarkNet%20DBG%21%21%21.png" alt="DarkNet Logo">
+            <div class="logo">
+                <h1>DARKNET MARKET</h1>
+                <p>DARKVIP | Private & Secure</p>
+            </div>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a data-nav="about">О проекте</a>
+            <a id="openRegisterBtn">Регистрация</a>
+        </div>
+    </div>
+
+    <div id="loginPage" style="display: block;">
+        <div class="login-container">
+            <h2>🔐 Вход в DarkNet Market</h2>
+            <p>Только для зарегистрированных пользователей</p>
+            <input type="text" id="loginUsername" class="login-input" placeholder="Логин" autocomplete="username">
+            <input type="password" id="loginPassword" class="login-input" placeholder="Пароль" autocomplete="current-password">
+            <button class="login-btn" id="doLoginBtn">Войти</button>
+            <div id="loginError" class="error-msg"></div>
+            <div class="register-link">Нет аккаунта? <span id="showRegisterForm">Зарегистрироваться</span></div>
+            <button class="btn reset-btn" id="hardResetBtn">⚠️ СБРОС ВСЕХ ДАННЫХ (только админ)</button>
+        </div>
+    </div>
+
+    <div id="registerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: #0f1629; max-width: 400px; margin: auto; padding: 32px; border-radius: 32px; border: 1px solid #2c3e8f;">
+            <h3 style="margin-bottom: 20px;">📝 Регистрация</h3>
+            <input type="text" id="regUsername" placeholder="Логин" class="login-input">
+            <input type="password" id="regPassword" placeholder="Пароль" class="login-input">
+            <button class="login-btn" id="doRegisterBtn">Создать аккаунт</button>
+            <button class="btn btn-outline" id="closeRegisterBtn" style="margin-top: 12px; width: 100%;">Отмена</button>
+        </div>
+    </div>
+
+    <div id="mainApp" style="display: none;">
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+            <button class="btn btn-outline" id="logoutMainBtn">🚪 Выйти</button>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="dashboard">🏠 Главная</button>
+            <button class="tab-btn" data-tab="vpn">🛡️ DARKVIP</button>
+            <button class="tab-btn" data-tab="goods">📦 Магазин</button>
+            <button class="tab-btn" data-tab="finance">💰 Кошелек</button>
+            <button class="tab-btn" data-tab="admin" id="adminTabBtn" style="display: none;">⚙️ Админ-панель</button>
+        </div>
+
+        <div id="dashboardPane" class="tab-pane active-pane">
+            <div class="grid-2">
+                <div class="stat-card"><div class="tag">🔒 Уровень защиты</div><div style="font-size: 32px;">DARKVIP</div><div id="vpnGlobalStatus">Активно</div></div>
+                <div class="stat-card"><div class="tag">💰 Баланс</div><div style="font-size: 32px;" id="walletBalance">0</div><div>RUB</div></div>
+            </div>
+            <div class="card">
+                <div class="section-icon">🌑</div>
+                <h3 style="text-align:center;">🔮 Добро пожаловать в DarkNet Market</h3>
+                <p style="text-align:center;">Закрытая площадка с анонимными товарами и сервисом DARKVIP — полная защита и шифрование.</p>
+                <div style="margin-top: 20px; text-align:center;"><span class="tag">🔹 Админ: Shcolar</span> <span class="tag">🔹 Техподдержка: Dunya</span></div>
+            </div>
+        </div>
+
+        <div id="vpnPane" class="tab-pane">
+            <div class="fake-vpn">
+                <h3>🛡️ DARKVIP — Защищённое подключение</h3>
+                <div class="vpn-status" id="vpnStatusIndicator">🔒 ЗАЩИЩЕНО</div>
+                <p style="margin: 16px 0;">Ваш IP: <span id="fakeIp">185.246.84.32</span><br>Страна: <span id="countryLabel">Нидерланды</span></p>
+                <select id="countrySelect" class="country-select">
+                    <option value="Нидерланды">Нидерланды</option>
+                    <option value="Германия">Германия</option>
+                    <option value="Франция">Франция</option>
+                    <option value="Швейцария">Швейцария</option>
+                    <option value="Исландия">Исландия</option>
+                </select>
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-primary" id="toggleVpnBtn">🔌 ВЫКЛЮЧИТЬ DARKVIP</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="goodsPane" class="tab-pane">
+            <div class="card" id="goodsCard">
+                <h3>📦 Магазин DarkNet</h3>
+                <div id="goodsBlockedMessage" style="display: none; text-align: center; padding: 40px;">
+                    <div style="font-size: 48px;">🔒</div>
+                    <h3>Доступ к магазину закрыт</h3>
+                    <p>Включите <span class="vpn-link" onclick="document.querySelector('[data-tab=\"vpn\"]').click();">DARKVIP</span> для просмотра товаров</p>
+                </div>
+                <div id="goodsContent">
+                    <div class="goods-grid" id="goodsContainer"></div>
+                    <hr>
+                    <h4>➕ Предложить товар (после одобрения админом появится в магазине)</h4>
+                    <input type="text" id="requestGoodName" placeholder="Название товара">
+                    <input type="number" id="requestGoodPrice" placeholder="Цена (RUB)">
+                    <textarea id="requestGoodDesc" rows="2" placeholder="Описание товара"></textarea>
+                    <button class="btn btn-primary" id="submitGoodRequestBtn">📨 Отправить на модерацию</button>
+                    <div id="adminGoodsSection" style="display: none; margin-top: 20px;">
+                        <h4>📋 Заявки на добавление товаров (только для админа)</h4>
+                        <div id="requestsList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="financePane" class="tab-pane">
+            <div class="card">
+                <h3>💰 Кошелек DarkNet</h3>
+                <div style="font-size: 40px; font-weight:800;" id="walletBalanceLarge">0</div>
+                <div id="financePermMsg" class="permission-info" style="margin-bottom: 16px;"></div>
+                <div style="display: flex; gap: 16px; margin: 24px 0;">
+                    <input type="number" id="depositSum" placeholder="Сумма (RUB)">
+                    <button class="btn btn-primary" id="depositBtn">💸 Пополнить</button>
+                </div>
+                <div id="financeLog" style="background:#0c1126; border-radius: 20px; padding: 12px;"></div>
+            </div>
+        </div>
+
+        <div id="adminPane" class="tab-pane">
+            <div class="card">
+                <h3>⚙️ Админ-панель</h3>
+                <h4>📋 Логи входов/выходов</h4>
+                <div id="logsList" style="max-height: 200px; overflow-y: auto; background: #0c1126; border-radius: 16px; padding: 12px; margin-bottom: 20px;"></div>
+                <h4>👥 Управление пользователями</h4>
+                <div id="usersList"></div>
+                <h4 style="margin-top: 20px;">➕ Добавить пользователя</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                    <input type="text" id="newAdminUsername" placeholder="Логин" style="flex:1">
+                    <input type="password" id="newAdminPassword" placeholder="Пароль" style="flex:1">
+                    <select id="newAdminRole" style="background: linear-gradient(95deg, #2c3e8f, #1e2a45); color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer;">
+                        <option value="Пользователь" style="background: #0f1629;">👤 Пользователь</option>
+                        <option value="Администратор" style="background: #0f1629;">👑 Администратор</option>
+                    </select>
+                    <button class="btn btn-primary" id="addUserBtn" style="background: linear-gradient(95deg, #2c3e8f, #1e2a45);">➕ Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- КОРЗИНА -->
+    <div class="cart-icon" id="cartIcon" onclick="toggleCart()">
+        🛒
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>🛒 Корзина</h3>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-total" id="cartTotal">Итого: 0 ₽</div>
+        <div class="order-summary" id="orderSummary" style="display: none;">
+            <h4>📋 Информация о заказе</h4>
+            <div id="orderSummaryContent"></div>
+        </div>
+        <button class="checkout-btn" onclick="showOrderSummary()">💳 Оформить заказ</button>
+        <div id="confirmCheckout" style="display: none; margin-top: 15px;">
+            <button class="btn btn-primary" onclick="checkout()">✅ Подтвердить заказ</button>
+            <button class="btn btn-outline" onclick="cancelCheckout()">❌ Отмена</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-row">
+            <span>© DarkNet Market — анонимная торговая площадка (ролевая игра).</span>
+            <span>© Все совпадения случайны, проект не связан с реальным DarkNet.</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const DEFAULT_AVATAR = "https://raw.githubusercontent.com/MayorDd-gmod/Dark-Net/main/DarkNet%20DBG%21%21%21.png";
+    const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1508411373019857067/vOrTBs49fV9v3TY75dPxmDNriqfb3iE64Db_GqLMeM2bs-nY2iE05SmyFuKH0Vgf98me";
+
+    function generateDarkId() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    let users = JSON.parse(localStorage.getItem("darknet_users")) || [
+        { username: "Shcolar", password: "111111228", balance: 50000, isAdmin: true, regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" },
+        { username: "Dunya", password: "DBG48148DDR", balance: 25000, isAdmin: true, regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" },
+        { username: "User", password: "123", balance: 1000, isAdmin: false, regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" }
+    ];
+    let goods = JSON.parse(localStorage.getItem("darknet_goods")) || [
+        { name: "Анонимный ноутбук", price: 45000, desc: "Полностью защищённая система, Tails OS" },
+        { name: "Криптокошелёк XMR", price: 12000, desc: "Монеро кошелёк с защитой транзакций" },
+        { name: "DARKVIP Подписка 1 мес", price: 2990, desc: "VPN + шифрованный чат" },
+        { name: "Дамп базы (учебный)", price: 500, desc: "Тестовые данные для пентеста" }
+    ];
+    let pendingRequests = JSON.parse(localStorage.getItem("darknet_requests")) || [];
+    let logs = JSON.parse(localStorage.getItem("darknet_logs")) || [];
+    let financeHistory = JSON.parse(localStorage.getItem("darknet_finlog")) || [];
+    let cart = JSON.parse(localStorage.getItem("darknet_cart")) || [];
+    let currentUser = null;
+    let vpnActive = true;
+    let currentCountry = "Нидерланды";
+    let fakeIps = {
+        "Нидерланды": "185.246.84.32",
+        "Германия": "45.137.22.18",
+        "Франция": "192.42.116.16",
+        "Швейцария": "104.244.42.129",
+        "Исландия": "94.140.112.88"
+    };
+    let currentTab = "dashboard";
+
+    function updateProfileLink() {
+        const navLinks = document.getElementById("navLinks");
+        if (currentUser) {
+            if (!document.getElementById("profileLink")) {
+                const profileLink = document.createElement("a");
+                profileLink.id = "profileLink";
+                profileLink.className = "profile-link";
+                profileLink.innerHTML = `👤 ${currentUser.username}`;
+                profileLink.onclick = () => showProfileModal();
+                const registerBtn = document.getElementById("openRegisterBtn");
+                navLinks.insertBefore(profileLink, registerBtn);
+            } else {
+                const profileLink = document.getElementById("profileLink");
+                profileLink.innerHTML = `👤 ${currentUser.username}`;
+            }
+        } else {
+            const profileLink = document.getElementById("profileLink");
+            if (profileLink) profileLink.remove();
+        }
+    }
+
+    function showProfileModal() {
+        let modal = document.getElementById("profileModal");
+        if (!modal) {
+            modal = document.createElement("div");
+            modal.id = "profileModal";
+            modal.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:2000;display:flex;justify-content:center;align-items:center;";
+            modal.innerHTML = `
+                <div style="background:#0f1629;max-width:450px;width:90%;padding:24px;border-radius:32px;border:1px solid #2c3e8f;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:20px;"><h3>👤 Профиль</h3><button id="closeProfileModalBtn" style="background:none;border:none;color:#ccc;font-size:24px;cursor:pointer;">✖️</button></div>
+                    <div style="display:flex;gap:16px;align-items:center;margin-bottom:20px;">
+                        <img id="modalAvatar" class="avatar" src="${DEFAULT_AVATAR}" style="width:64px;height:64px;cursor:pointer;">
+                        <div><p><strong>Логин:</strong> <span id="modalUsername"></span></p><p><strong>Роль:</strong> <span id="modalRole"></span></p><p><strong>Баланс:</strong> <span id="modalBalance"></span> RUB</p><p><strong>ID DARK:</strong> <span id="modalDarkId"></span></p></div>
+                    </div>
+                    <div class="profile-field"><label>💬 Discord:</label><input type="text" id="modalDiscord" placeholder="Ваш Discord"></div>
+                    <button class="btn btn-primary" id="saveProfileModalBtn">💾 Сохранить</button>
+                    <button class="btn btn-outline" id="changePasswordModalBtn" style="margin-top:10px;">🔐 Сменить пароль</button>
+                    <button class="btn btn-outline" id="changeNicknameModalBtn" style="margin-top:10px;margin-left:10px;">✏️ Сменить никнейм</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById("closeProfileModalBtn").onclick = () => modal.style.display = "none";
+            document.getElementById("saveProfileModalBtn").onclick = () => {
+                let user = users.find(u => u.username === currentUser.username);
+                if (user) {
+                    user.discord = document.getElementById("modalDiscord").value;
+                    currentUser.discord = user.discord;
+                    saveAll();
+                    showToast("Профиль сохранён");
+                    modal.style.display = "none";
+                }
+            };
+            document.getElementById("changePasswordModalBtn").onclick = async () => {
+                let newPass = prompt("Введите новый пароль:");
+                if (newPass && newPass.trim()) {
+                    let user = users.find(u => u.username === currentUser.username);
+                    if (user) { user.password = newPass.trim(); currentUser.password = newPass.trim(); saveAll(); showToast("Пароль изменён"); modal.style.display = "none"; }
+                }
+            };
+            document.getElementById("changeNicknameModalBtn").onclick = async () => {
+                let newNick = prompt("Введите новый никнейм:");
+                if (newNick && newNick.trim()) {
+                    if (users.find(u => u.username === newNick)) { showToast("Никнейм уже занят"); return; }
+                    let oldNick = currentUser.username;
+                    let user = users.find(u => u.username === oldNick);
+                    if (user) user.username = newNick.trim();
+                    currentUser.username = newNick.trim();
+                    saveAll();
+                    showToast("Никнейм изменён");
+                    updateProfileLink();
+                    modal.style.display = "none";
+                }
+            };
+            document.getElementById("modalAvatar").onclick = () => {
+                let url = prompt("Введите URL новой аватарки:", currentUser.avatar);
+                if (url && url.trim()) {
+                    currentUser.avatar = url.trim();
+                    let user = users.find(u => u.username === currentUser.username);
+                    if (user) user.avatar = url.trim();
+                    saveAll();
+                    document.getElementById("modalAvatar").src = url;
+                    showToast("Аватарка обновлена");
+                }
+            };
+        }
+        const userData = users.find(u => u.username === currentUser.username);
+        document.getElementById("modalUsername").innerText = currentUser.username;
+        document.getElementById("modalRole").innerText = currentUser.isAdmin ? "Администратор" : "Пользователь";
+        document.getElementById("modalBalance").innerText = currentUser.balance.toLocaleString();
+        document.getElementById("modalDarkId").innerText = userData?.darkId || "—";
+        document.getElementById("modalDiscord").value = currentUser.discord || "";
+        document.getElementById("modalAvatar").src = currentUser.avatar || DEFAULT_AVATAR;
+        modal.style.display = "flex";
+    }
+
+    function addLog(message) { logs.unshift({ message, time: new Date().toLocaleString() }); if (logs.length > 50) logs.pop(); localStorage.setItem("darknet_logs", JSON.stringify(logs)); }
+    async function sendDiscordNotification(title, message) { try { await fetch(DISCORD_WEBHOOK, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ content: `**${title}**\n${message}\n⏰ ${new Date().toLocaleString()}` }) }); } catch(e) {} }
+    function showToast(msg) { let t=document.createElement("div"); t.className="toast"; t.innerText=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
+    function saveAll() {
+        localStorage.setItem("darknet_users", JSON.stringify(users));
+        localStorage.setItem("darknet_goods", JSON.stringify(goods));
+        localStorage.setItem("darknet_finlog", JSON.stringify(financeHistory));
+        localStorage.setItem("darknet_requests", JSON.stringify(pendingRequests));
+        localStorage.setItem("darknet_cart", JSON.stringify(cart));
+        if (currentUser) localStorage.setItem(`darknet_vpn_${currentUser.username}`, JSON.stringify({ vpnActive, currentCountry }));
+        refreshUI();
+    }
+    function isAdmin() { return currentUser && currentUser.isAdmin === true; }
+    function updateCartDisplay() {
+        const cartCountSpan = document.getElementById("cartCount");
+        if (cartCountSpan) cartCountSpan.innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const cartItemsDiv = document.getElementById("cartItems");
+        const cartTotalSpan = document.getElementById("cartTotal");
+        if (cartItemsDiv && cartTotalSpan) {
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = "<div style='text-align:center;padding:20px;color:#8f9ed4;'>Корзина пуста</div>";
+                cartTotalSpan.innerHTML = "Итого: 0 ₽";
+                document.getElementById("orderSummary").style.display = "none";
+                document.getElementById("confirmCheckout").style.display = "none";
+                return;
+            }
+            let total = 0;
+            cartItemsDiv.innerHTML = "";
+            cart.forEach((item, idx) => {
+                total += item.price * item.quantity;
+                cartItemsDiv.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-title">${escapeHtml(item.name)}</div>
+                            <div class="cart-item-price">${item.price} ₽ × ${item.quantity}</div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <button onclick="changeCartQuantity(${idx}, -1)">−</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="changeCartQuantity(${idx}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            cartTotalSpan.innerHTML = `Итого: ${total} ₽`;
+        }
+    }
+    function toggleCart() { document.getElementById("cartSidebar").classList.toggle("open"); updateCartDisplay(); }
+    function updateCartIconVisibility() {
+        const cartIcon = document.getElementById("cartIcon");
+        if (currentTab === "goods" && currentUser && vpnActive) cartIcon.classList.add("visible");
+        else cartIcon.classList.remove("visible");
+    }
+    function addToCart(name, price) {
+        if (!currentUser) { showToast("Войдите в аккаунт"); return; }
+        if (!vpnActive) { showToast("Для покупок включите DARKVIP"); return; }
+        let existing = cart.find(item => item.name === name);
+        if (existing) existing.quantity++;
+        else cart.push({ name, price, quantity: 1 });
+        saveAll();
+        showToast(`✅ ${name} добавлен в корзину`);
+        updateCartDisplay();
+    }
+    window.changeCartQuantity = function(idx, delta) {
+        let newQty = cart[idx].quantity + delta;
+        if (newQty <= 0) cart.splice(idx, 1);
+        else cart[idx].quantity = newQty;
+        saveAll();
+        updateCartDisplay();
+    };
+    
+    function showOrderSummary() {
+        if (cart.length === 0) { showToast("Корзина пуста"); return; }
+        let userData = users.find(u => u.username === currentUser.username);
+        if (!userData.discord) { showToast("Заполните Discord в профиле"); return; }
+        let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        let itemsHtml = "";
+        cart.forEach(item => { itemsHtml += `<p>${item.name} x${item.quantity} = ${item.price * item.quantity} ₽</p>`; });
+        let summaryHtml = `
+            <p><strong>--- IC ЧАСТЬ ---</strong></p>
+            <p>📍 ID DARK: ${userData.darkId}</p>
+            <p>📦 Заказ:</p>
+            ${itemsHtml}
+            <p>💰 Итого: ${total} ₽</p>
+            <p><strong>--- OOC ЧАСТЬ ---</strong></p>
+            <p>💬 Discord: ${userData.discord}</p>
+            <p>⏰ Время: ${new Date().toLocaleString()}</p>
+        `;
+        document.getElementById("orderSummaryContent").innerHTML = summaryHtml;
+        document.getElementById("orderSummary").style.display = "block";
+        document.getElementById("confirmCheckout").style.display = "block";
+    }
+    function cancelCheckout() {
+        document.getElementById("orderSummary").style.display = "none";
+        document.getElementById("confirmCheckout").style.display = "none";
+    }
+    async function checkout() {
+        if (!currentUser) { showToast("Войдите в аккаунт"); return; }
+        if (cart.length === 0) { showToast("Корзина пуста"); return; }
+        let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        if (currentUser.balance < total) { showToast("Недостаточно средств на кошельке"); return; }
+        let userData = users.find(u => u.username === currentUser.username);
+        if (!userData.discord) { showToast("Заполните Discord в профиле"); return; }
+        currentUser.balance -= total;
+        let orderItems = "";
+        cart.forEach(item => { orderItems += `- ${item.name} x${item.quantity} = ${item.price * item.quantity} ₽\n`; });
+        let orderMessage = `**🆕 НОВЫЙ ЗАКАЗ!**\n\n**--- IC ЧАСТЬ ---**\n**ID DARK:** ${userData.darkId}\n**📦 Заказ:**\n${orderItems}\n**💰 Итого:** ${total} ₽\n\n**--- OOC ЧАСТЬ ---**\n**💬 Discord:** ${userData.discord}\n**⏰ Время:** ${new Date().toLocaleString()}`;
+        await sendDiscordNotification("🛒 НОВЫЙ ЗАКАЗ", orderMessage);
+        financeHistory.unshift(`🛒 Заказ на сумму ${total} RUB (${cart.length} товаров)`);
+        cart = [];
+        saveAll();
+        showToast(`✅ Заказ оформлен! С вами свяжутся в Discord`);
+        document.getElementById("orderSummary").style.display = "none";
+        document.getElementById("confirmCheckout").style.display = "none";
+        toggleCart();
+        refreshUI();
+    }
+    window.checkout = checkout;
+    window.showOrderSummary = showOrderSummary;
+    window.cancelCheckout = cancelCheckout;
+    window.addToCart = addToCart;
+
+    function updateShopVisibility() {
+        const goodsContent = document.getElementById("goodsContent");
+        const goodsBlocked = document.getElementById("goodsBlockedMessage");
+        if (!vpnActive) { if (goodsContent) goodsContent.style.display = "none"; if (goodsBlocked) goodsBlocked.style.display = "block"; } 
+        else { if (goodsContent) goodsContent.style.display = "block"; if (goodsBlocked) goodsBlocked.style.display = "none"; }
+    }
+    function updateVPNUI() {
+        const statusDiv = document.getElementById("vpnStatusIndicator");
+        const toggleBtn = document.getElementById("toggleVpnBtn");
+        const globalStatusSpan = document.getElementById("vpnGlobalStatus");
+        if (vpnActive) {
+            statusDiv.className = "vpn-status active"; statusDiv.innerHTML = "🔒 ЗАЩИЩЕНО";
+            if (toggleBtn) toggleBtn.innerHTML = "🔌 ВЫКЛЮЧИТЬ DARKVIP";
+            if (globalStatusSpan) globalStatusSpan.innerHTML = "Активно";
+        } else {
+            statusDiv.className = "vpn-status inactive"; statusDiv.innerHTML = "⚠️ НЕ ЗАЩИЩЕНО";
+            if (toggleBtn) toggleBtn.innerHTML = "🔒 ВКЛЮЧИТЬ DARKVIP";
+            if (globalStatusSpan) globalStatusSpan.innerHTML = "Отключено";
+        }
+        const ipSpan = document.getElementById("fakeIp");
+        const countrySpan = document.getElementById("countryLabel");
+        if (vpnActive) { ipSpan.innerText = fakeIps[currentCountry] || "185.246.84.32"; countrySpan.innerText = currentCountry; } 
+        else { ipSpan.innerText = "93.184.216.34"; countrySpan.innerText = "Соединённые Штаты Америки"; }
+        updateShopVisibility();
+        updateCartIconVisibility();
+    }
+    function refreshUI() {
+        if (!currentUser) return;
+        document.getElementById("walletBalance").innerText = currentUser.balance.toLocaleString();
+        document.getElementById("walletBalanceLarge").innerText = currentUser.balance.toLocaleString();
+        updateProfileLink();
+        const financePermMsg = document.getElementById("financePermMsg");
+        if (financePermMsg) {
+            if (isAdmin()) financePermMsg.innerHTML = "✅ Администратор может пополнять баланс любым пользователям";
+            else financePermMsg.innerHTML = "⛔ Пополнение баланса доступно только администраторам. Обратитесь к Shcolar или Dunya.";
+        }
+        const adminTab = document.getElementById("adminTabBtn");
+        if (adminTab) adminTab.style.display = isAdmin() ? "inline-block" : "none";
+        const goodsDiv = document.getElementById("goodsContainer");
+        if(goodsDiv && vpnActive) {
+            goodsDiv.innerHTML = "";
+            goods.forEach((g, idx) => {
+                let buyDisabled = currentUser.balance < g.price ? 'disabled' : '';
+                goodsDiv.innerHTML += `<div class="good-card"><h4>🔹 ${escapeHtml(g.name)}</h4><div class="good-desc">📝 ${escapeHtml(g.desc)}</div><div class="good-price">${g.price} RUB</div><button class="btn btn-primary" onclick="addToCart('${escapeHtml(g.name)}', ${g.price})" ${buyDisabled}>🛒 В корзину</button>${isAdmin() ? `<button class="btn btn-outline" onclick="removeGood(${idx})" style="margin-top:8px;">🗑️ Удалить</button>` : ''}</div>`;
+            });
+        }
+        const logDiv = document.getElementById("financeLog");
+        if(logDiv) logDiv.innerHTML = financeHistory.slice(-6).reverse().map(h => `<div>🔹 ${h}</div>`).join('') || "<div>Нет операций</div>";
+        if (isAdmin()) {
+            const requestsDiv = document.getElementById("requestsList");
+            if (requestsDiv) {
+                requestsDiv.innerHTML = "";
+                if (pendingRequests.length === 0) requestsDiv.innerHTML = "<div>Нет заявок на добавление товаров</div>";
+                pendingRequests.forEach((req, idx) => {
+                    requestsDiv.innerHTML += `<div class="request-item"><strong>📦 ${escapeHtml(req.name)}</strong><br>💰 ${req.price} RUB<br>📝 ${escapeHtml(req.desc)}<br>👤 Автор: ${escapeHtml(req.author)}<br><button class="btn btn-primary" onclick="approveRequest(${idx})">✅ Одобрить</button> <button class="btn btn-outline" onclick="rejectRequest(${idx})">❌ Отклонить</button></div>`;
+                });
+            }
+            const logsDiv = document.getElementById("logsList");
+            if (logsDiv) logsDiv.innerHTML = logs.slice(0, 30).map(l => `<div>🔹 ${l.time} - ${l.message}</div>`).join('') || "<div>Логов нет</div>";
+            const usersDiv = document.getElementById("usersList");
+            if (usersDiv) {
+                usersDiv.innerHTML = "";
+                users.forEach((u, idx) => {
+                    usersDiv.innerHTML += `
+                        <div class="user-card">
+                            <div class="user-header">
+                                <div class="user-name">${escapeHtml(u.username)}</div>
+                                <div class="user-balance">💰 ${u.balance} RUB</div>
+                            </div>
+                            <div><span class="user-role ${u.isAdmin ? 'role-admin' : 'role-user'}">${u.isAdmin ? '👑 Администратор' : '👤 Пользователь'}</span></div>
+                            <div class="user-actions">
+                                <button class="btn btn-admin" onclick="editUserRole(${idx})">✏️ Роль</button>
+                                <button class="btn btn-outline" onclick="editUserNickname(${idx})">✏️ Ник</button>
+                                <button class="btn btn-outline" onclick="editUserPassword(${idx})">🔐 Пароль</button>
+                                <button class="btn btn-outline" onclick="depositToUser(${idx})">💰 Пополнить</button>
+                                <button class="btn btn-outline" onclick="deleteUser(${idx})">🗑️ Удалить</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+        updateCartDisplay();
+        updateCartIconVisibility();
+        updateVPNUI();
+    }
+    
+    window.depositToUser = async (idx) => { if (!isAdmin()) { showToast("Недостаточно прав"); return; } let user = users[idx]; let sum = parseFloat(prompt(`Введите сумму для пополнения баланса пользователя ${user.username}:`)); if (isNaN(sum) || sum <= 0) { showToast("Введите сумму >0"); return; } user.balance += sum; financeHistory.unshift(`💰 Админ ${currentUser.username} пополнил баланс ${user.username} на +${sum} RUB`); await sendDiscordNotification("💰 ПОПОЛНЕНИЕ БАЛАНСА (АДМИН)", `Админ ${currentUser.username} пополнил баланс ${user.username} на ${sum} RUB`); saveAll(); showToast(`Баланс ${user.username} пополнен на ${sum} RUB`); };
+    window.approveRequest = async (idx) => { if (!isAdmin()) return; let req = pendingRequests[idx]; goods.push({ name: req.name, price: req.price, desc: req.desc }); pendingRequests.splice(idx, 1); saveAll(); showToast("Товар добавлен в магазин"); };
+    window.rejectRequest = async (idx) => { if (!isAdmin()) return; let req = pendingRequests[idx]; pendingRequests.splice(idx, 1); saveAll(); showToast("Заявка отклонена"); };
+    document.getElementById("submitGoodRequestBtn")?.addEventListener("click", async () => { if (!currentUser) { showToast("Войдите в аккаунт"); return; } let name = document.getElementById("requestGoodName").value.trim(); let price = parseFloat(document.getElementById("requestGoodPrice").value); let desc = document.getElementById("requestGoodDesc").value.trim(); if (!name || isNaN(price) || price <= 0) { showToast("Заполните все поля"); return; } pendingRequests.push({ name, price, desc: desc || "Без описания", author: currentUser.username }); saveAll(); document.getElementById("requestGoodName").value = ""; document.getElementById("requestGoodPrice").value = ""; document.getElementById("requestGoodDesc").value = ""; showToast("Заявка отправлена на модерацию"); });
+    window.editUserRole = async (idx) => { if (!isAdmin()) return; let user = users[idx]; let newRole = prompt(`Новая роль для ${user.username} (Пользователь/Администратор):`, user.isAdmin ? "Администратор" : "Пользователь"); if (newRole && (newRole.toLowerCase() === "администратор" || newRole.toLowerCase() === "admin")) { user.isAdmin = true; } else if (newRole && (newRole.toLowerCase() === "пользователь" || newRole.toLowerCase() === "user")) { user.isAdmin = false; } saveAll(); showToast("Роль изменена"); };
+    window.editUserNickname = async (idx) => { if (!isAdmin()) return; let user = users[idx]; let newNick = prompt(`Новый никнейм для ${user.username}:`, user.username); if (newNick && newNick.trim()) { let oldNick = user.username; user.username = newNick.trim(); if (currentUser.username === oldNick) currentUser.username = user.username; saveAll(); updateProfileLink(); showToast("Никнейм изменён"); } };
+    window.editUserPassword = async (idx) => { if (!isAdmin()) return; let user = users[idx]; let newPass = prompt(`Новый пароль для ${user.username}:`); if (newPass && newPass.trim()) { user.password = newPass.trim(); saveAll(); showToast("Пароль изменён"); } };
+    window.deleteUser = async (idx) => { if (!isAdmin()) return; let user = users[idx]; if (user.username === currentUser.username) { showToast("Нельзя удалить себя"); return; } if (confirm(`Удалить пользователя ${user.username}?`)) { users.splice(idx, 1); saveAll(); showToast("Пользователь удалён"); } };
+    document.getElementById("addUserBtn")?.addEventListener("click", async () => { if (!isAdmin()) return; let name = document.getElementById("newAdminUsername").value.trim(); let pass = document.getElementById("newAdminPassword").value.trim(); let role = document.getElementById("newAdminRole").value; if (!name || !pass) { showToast("Заполните поля"); return; } if (users.find(u => u.username === name)) { showToast("Логин уже есть"); return; } users.push({ username: name, password: pass, balance: 1000, isAdmin: role === "Администратор", regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" }); saveAll(); document.getElementById("newAdminUsername").value = ""; document.getElementById("newAdminPassword").value = ""; showToast("Пользователь добавлен"); });
+    window.removeGood = async function(idx) { if(!isAdmin()) { showToast("Только админ"); return; } let removed = goods[idx]; goods.splice(idx,1); saveAll(); showToast(`Товар "${removed.name}" удалён`); await sendDiscordNotification("🗑️ УДАЛЕНИЕ ТОВАРА", `Админ ${currentUser.username} удалил товар "${removed.name}"`); };
+    document.getElementById("depositBtn")?.addEventListener("click", async () => { if (!isAdmin()) { showToast("Пополнение баланса доступно только администраторам"); return; } if(!currentUser) return; let targetUsername = prompt("Введите логин пользователя для пополнения:"); if (!targetUsername) return; let targetUser = users.find(u => u.username === targetUsername); if (!targetUser) { showToast("Пользователь не найден"); return; } let sum = parseFloat(document.getElementById("depositSum").value); if(isNaN(sum)||sum<=0) { showToast("Введите сумму >0"); return; } targetUser.balance += sum; financeHistory.unshift(`💰 Админ ${currentUser.username} пополнил баланс ${targetUser.username} на +${sum} RUB`); await sendDiscordNotification("💰 ПОПОЛНЕНИЕ БАЛАНСА (АДМИН)", `Админ ${currentUser.username} пополнил баланс ${targetUser.username} на ${sum} RUB`); saveAll(); document.getElementById("depositSum").value = ""; showToast(`Баланс ${targetUser.username} пополнен на ${sum} RUB`); });
+    document.getElementById("toggleVpnBtn")?.addEventListener("click", () => { vpnActive = !vpnActive; saveAll(); showToast(vpnActive ? "DARKVIP включён, трафик защищён" : "DARKVIP отключён, соединение не защищено"); refreshUI(); });
+    document.getElementById("countrySelect")?.addEventListener("change", (e) => { if (!vpnActive) { showToast("Сначала включите DARKVIP"); e.target.value = currentCountry; return; } currentCountry = e.target.value; saveAll(); showToast(`Страна изменена на ${currentCountry}`); });
+    document.getElementById("doLoginBtn")?.addEventListener("click", async () => { let userLogin = document.getElementById("loginUsername").value.trim(); let pass = document.getElementById("loginPassword").value; let member = users.find(u => u.username === userLogin && u.password === pass); if(member) { currentUser = { ...member }; document.getElementById("loginPage").style.display = "none"; document.getElementById("mainApp").style.display = "block"; vpnActive = true; currentCountry = "Нидерланды"; let saved = localStorage.getItem(`darknet_vpn_${currentUser.username}`); if(saved) { try { let v = JSON.parse(saved); vpnActive = v.vpnActive; currentCountry = v.currentCountry; document.getElementById("countrySelect").value = currentCountry; } catch(e) {} } refreshUI(); showToast(`Добро пожаловать, ${member.username}`); document.getElementById("loginUsername").value = ""; document.getElementById("loginPassword").value = ""; } else { document.getElementById("loginError").innerText = "Неверный логин или пароль"; } });
+    document.getElementById("logoutMainBtn")?.addEventListener("click", async () => { if(currentUser) { localStorage.setItem(`darknet_vpn_${currentUser.username}`, JSON.stringify({ vpnActive, currentCountry })); } currentUser = null; document.getElementById("loginPage").style.display = "block"; document.getElementById("mainApp").style.display = "none"; updateProfileLink(); showToast("Вы вышли"); });
+    const registerModal = document.getElementById("registerModal");
+    document.getElementById("showRegisterForm")?.addEventListener("click", () => { registerModal.style.display = "flex"; });
+    document.getElementById("openRegisterBtn")?.addEventListener("click", () => { registerModal.style.display = "flex"; });
+    document.getElementById("closeRegisterBtn")?.addEventListener("click", () => { registerModal.style.display = "none"; });
+    document.getElementById("doRegisterBtn")?.addEventListener("click", async () => { let newUser = document.getElementById("regUsername").value.trim(); let newPass = document.getElementById("regPassword").value.trim(); if(!newUser || !newPass) { showToast("Заполните поля"); return; } if(users.find(u=>u.username===newUser)) { showToast("Логин занят"); return; } users.push({ username: newUser, password: newPass, balance: 1000, isAdmin: false, regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" }); saveAll(); registerModal.style.display = "none"; document.getElementById("regUsername").value = ""; document.getElementById("regPassword").value = ""; showToast("Регистрация успешна! Теперь войдите."); });
+    document.getElementById("hardResetBtn")?.addEventListener("click", async () => { if(!isAdmin()) { showToast("Недостаточно прав"); return; } if(confirm("Сбросить все данные?")) { users = [ { username: "Shcolar", password: "111111228", balance: 50000, isAdmin: true, regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" }, { username: "Dunya", password: "DBG48148DDR", balance: 25000, isAdmin: true, regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" }, { username: "User", password: "123", balance: 1000, isAdmin: false, regDate: new Date().toLocaleDateString(), avatar: DEFAULT_AVATAR, darkId: generateDarkId(), discord: "" } ]; goods = [ { name: "Анонимный ноутбук", price: 45000, desc: "Полностью защищённая система, Tails OS" }, { name: "Криптокошелёк XMR", price: 12000, desc: "Монеро кошелёк с защитой транзакций" }, { name: "DARKVIP Подписка 1 мес", price: 2990, desc: "VPN + шифрованный чат" }, { name: "Дамп базы (учебный)", price: 500, desc: "Тестовые данные для пентеста" } ]; financeHistory = []; pendingRequests = []; logs = []; cart = []; localStorage.removeItem("darknet_saved_user"); saveAll(); if(currentUser) currentUser = null; document.getElementById("loginPage").style.display = "block"; document.getElementById("mainApp").style.display = "none"; updateProfileLink(); showToast("Все данные сброшены"); setTimeout(() => location.reload(), 1000); } });
+    const tabs = document.querySelectorAll('#mainApp .tab-btn');
+    const panesMap = { dashboard:'dashboardPane', vpn:'vpnPane', goods:'goodsPane', finance:'financePane', admin:'adminPane' };
+    tabs.forEach(btn => { btn.addEventListener('click',()=>{ let tab = btn.getAttribute('data-tab'); currentTab = tab; Object.values(panesMap).forEach(p => document.getElementById(p)?.classList.remove('active-pane')); if(panesMap[tab]) document.getElementById(panesMap[tab])?.classList.add('active-pane'); tabs.forEach(t=>t.classList.remove('active')); btn.classList.add('active'); updateCartIconVisibility(); }); });
+    function escapeHtml(str) { return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    document.querySelectorAll('[data-nav]').forEach(link => { link.addEventListener('click', (e) => { if(e.target.getAttribute('data-nav')==='about') showToast('DarkNet Market — анонимная площадка (ролевая игра).'); }); });
+    refreshUI();
+</script>
+</body>
+</html>
